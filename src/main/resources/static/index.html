@@ -218,6 +218,11 @@
     <i class="fa-solid fa-briefcase"></i> EmpConnect Dashboard
   </h1>
 </header>
+<script>
+  if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+  }
+</script>
 
 
   <div class="container">

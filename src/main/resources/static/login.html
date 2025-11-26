@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EmpConnect | Login / Sign Up</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* ---------- PAGE LAYOUT ---------- */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* ---------- LEFT IMAGE AREA ----------- */
+
+.left-section {
+    width: 55%;
+    background: #ededed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-section img {
+    width: 88%;
+    height: auto;
+}
+
+/* ---------- RIGHT LOGIN CARD ---------- */
+
+.right-section {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    background: #dcdcdc;
+    padding: 40px;
+    width: 420px;
+    border-radius: 25px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+/* USER ICON */
+
+.user-icon {
+    width: 120px;
+    height: 120px;
+    background: #3b3b3b;
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-icon i {
+    font-size: 60px;
+    color: white;
+}
+
+/* INPUT BOXES */
+
+.input-box {
+   width: 100%;
+    background: #3b3b3b;
+    padding: 15px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.input-box i {
+    color: white;
+    font-size: 17px;
+    margin-right: 12px;
+}
+
+.input-box input {
+     flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+}
+.password-wrapper {
+    display: flex;
+    align-items: left;
+}
+.eye-icon {
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 12px;
+}
+#confirmWrapper .eye-icon {
+    right: auto;      /* remove right position */
+    left: 10px;       /* move to left */
+}
+/* BUTTON STYLES */
+
+#loginButtons button,
+#createBtn {
+    padding: 12px 20px;
+    margin: 12px 10px 0 10px;
+    border: none;
+    border-radius: 6px;
+    background: #3b3b3b;
+    color: rgb(213, 208, 208);
+    font-size: 15px;
+    cursor: pointer;
+    width:30%;
+}
+
+#loginButtons {
+    margin-top: 15px;
+}
+
+#createBtn {
+    width: 30%;
+    margin: 18px auto 0 auto;
+    display: none;
+    align-items: center;
+    color:rgb(244, 240, 240)
+    
+}
+
+#loginButtons button:hover,
+#createBtn:hover {
+    opacity: 0.85;
+}
+
+/* ERROR & SUCCESS TEXT */
+
+#error {
+    margin-top: 14px;
+    color: red;
+}
+
+#success {
+    margin-top: 14px;
+    color: green;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT IMAGE -->
+    <div class="left-section">
+        <img src="image.png">
+    </div>
+
+    <!-- RIGHT LOGIN CARD -->
+    <div class="right-section">
+
+        <div class="login-card">
+
+            <div class="user-icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <h2 id="formTitle">Login</h2>
+
+            <div class="input-box">
+                <i class="fa-solid fa-user"></i>
+                <input type="email" id="email" placeholder="Email ID" required>
+            </div>
+          
+            <div class="input-box password-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" placeholder="Password" required>
+                <i class="fa-solid fa-eye eye-icon" onclick="togglePassword('password', this)"></i>
+            </div>
+
+            <div class="input-box password-wrapper" id="confirmWrapper" style="display:none;">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password">
+                <i class="fa-solid fa-eye eye-icon" onclick="togglePassword('confirmPassword', this)"></i>
+            </div>
+
+            <div id="loginButtons">
+                <button id="loginBtn" onclick="login()">Login</button>
+                <button id="signupBtn" onclick="showSignup()">Sign Up</button>
+            </div>
+
+            <button id="createBtn" onclick="createAccount()">Create Account</button>
+
+            <div id="error"></div>
+            <div id="success"></div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ❗ JS UNCHANGED BELOW ❗ -->
+
+<script>
+
+// Clear message text
+function clearMessages(){
+  document.getElementById("error").textContent = "";
+  document.getElementById("success").textContent = "";
+}
+
+// Show Signup Screen
+function showSignup(){
+  document.getElementById("formTitle").textContent = "Sign Up";
+  document.getElementById("confirmWrapper").style.display = "block";
+  document.getElementById("loginButtons").style.display = "none";
+  document.getElementById("createBtn").style.display = "block";
+  clearMessages();
+}
+
+// Eye Icon Toggle Function
+function togglePassword(fieldId, icon){
+  const field = document.getElementById(fieldId);
+
+  if(field.type === "password"){
+    field.type = "text";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  } else {
+    field.type = "password";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  }
+}
+
+// LOGIN
+async function login(){
+  clearMessages();
+  let email = document.getElementById("email").value.trim();
+  let password = document.getElementById("password").value.trim();
+
+  if(!email || !password){
+    document.getElementById("error").textContent = "❌ All fields are required";
+    return;
+  }
+
+  const res = await fetch("http://localhost:8080/auth/login", {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({email,password})
+  });
+
+  const text = await res.text();
+
+  if(text === "SUCCESS"){
+    localStorage.setItem("loggedIn","true");
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("error").textContent = "❌ Invalid email or password";
+  }
+}
+
+// SIGNUP
+async function createAccount(){
+  clearMessages();
+  let email = document.getElementById("email").value.trim();
+  let password = document.getElementById("password").value.trim();
+  let confirm = document.getElementById("confirmPassword").value.trim();
+
+  if(!email || !password || !confirm){
+    document.getElementById("error").textContent = "❌ All fields are required";
+    return;
+  }
+
+  if(password !== confirm){
+    document.getElementById("error").textContent = "❌ Passwords do not match";
+    return;
+  }
+
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+  if(!emailPattern.test(email)){
+    document.getElementById("error").textContent = "❌ Invalid email format";
+    return;
+  }
+
+  const res = await fetch("http://localhost:8080/auth/signup", {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({email,password})
+  });
+
+  const text = await res.text();
+
+  if(text === "SUCCESS"){
+    document.getElementById("success").textContent = "✅ Account created! Please login.";
+    setTimeout(()=>{ location.reload(); }, 2000);
+  } else if(text === "EXISTS"){
+    document.getElementById("error").textContent = "❌ Email already exists! Please login.";
+  } else {
+    document.getElementById("error").textContent = "❌ Something went wrong";
+  }
+}
+
+</script>
+
+</body>
+</html>
